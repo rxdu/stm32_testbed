@@ -10,3 +10,6 @@ This repository contains code for easy and fast setup of testing code for newly 
 
 The project should also compile with a similar environment setup.
 
+## Sample setup
+
+A board named "bbb_racer_cape" is provided in this repository. You can use the setup of this board as a reference for a new board.

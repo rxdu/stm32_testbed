@@ -88,7 +88,7 @@ add_subdirectory(${WS_LIBRARY_PATH}/SeggerRTT)
 
 # common modules
 add_subdirectory(${WS_MODULES_PATH}/dprint)
-add_subdirectory(${WS_MODULES_PATH}/mcal)
+# add_subdirectory(${WS_MODULES_PATH}/mcal)
 
 # project-specific modules
 # add_subdirectory(driver)

@@ -12,7 +12,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "main.h"
+#include "dprint/dprint.h"
+#include "test_items.h"
 
 #define TASK_PRIORITY_HIGHEST 4
 #define TASK_PRIORITY_HIGH 3
@@ -22,20 +23,19 @@
 static void TestbedMainTask();
 
 bool InitTestbed() {
+  DPrintf(0, "Starting STM32 testbed\n", 0);
+
   xTaskCreate(TestbedMainTask, (const char *)"TestBedMain", 256, NULL,
               TASK_PRIORITY_MID, NULL);
   return true;
 }
 
 void TestbedMainTask() {
-  const TickType_t task_delay = pdMS_TO_TICKS(200);
+  const TickType_t task_delay = pdMS_TO_TICKS(10);
   TickType_t last_waketime = xTaskGetTickCount();
 
   for (;;) {
-    HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-    HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-    HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
-    HAL_GPIO_TogglePin(LED4_GPIO_Port, LED4_Pin);
+    TestLed();
 
     vTaskDelayUntil(&last_waketime, task_delay);
   }
