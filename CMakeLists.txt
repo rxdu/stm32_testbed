@@ -17,9 +17,9 @@ set(BOARD_NAME "bbb_racer_cape")
 endif()
 
 ## choose the application
-# app_blink, app_racer
+# app_blink
 if(NOT DEFINED APP_NAME)
-set(APP_NAME "app_racer")
+set(APP_NAME "app_blink")
 endif()
 
 ## chosse build type (Debug/Release)
