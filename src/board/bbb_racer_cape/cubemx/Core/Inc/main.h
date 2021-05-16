@@ -74,6 +74,7 @@ void Error_Handler(void);
 #define LED4_GPIO_Port GPIOA
 #define IAM20680_INT_Pin GPIO_PIN_5
 #define IAM20680_INT_GPIO_Port GPIOC
+#define IAM20680_INT_EXTI_IRQn EXTI9_5_IRQn
 #define FRSKY_INV_Pin GPIO_PIN_15
 #define FRSKY_INV_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */

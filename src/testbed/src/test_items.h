@@ -13,5 +13,6 @@
 #include <stdint.h>
 
 uint8_t TestLed();
+uint8_t TestDio();
 
 #endif /* TEST_ITEMS_H */

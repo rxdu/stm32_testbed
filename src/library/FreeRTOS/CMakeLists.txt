@@ -20,18 +20,6 @@ endif()
 
 message(STATUS "FreeRTOS port: ${TARGET_PORT_SRC}")
 
-if(USE_SYSTEM_VIEW)
-set(SEGGER_SYSVIEW_SRC
-    SystemView/SEGGER/SEGGER_SYSVIEW.c 
-    SystemView/SEGGER/SEGGER_RTT_printf.c 
-    SystemView/SEGGER/SEGGER_RTT_Syscalls_GCC.c 
-    SystemView/SEGGER/SEGGER_RTT.c
-    SystemView/SEGGER/SEGGER_RTT_ASM_ARMv7M.S
-    SystemView/FreeRTOSV10/SEGGER_SYSVIEW_Config_FreeRTOS.c 
-    SystemView/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c
-)
-endif()
-
 add_library(freertos ${FREERTOS_SRC} ${TARGET_PORT_SRC} ${SEGGER_SYSVIEW_SRC})
 target_link_libraries(freertos PUBLIC cmsis)
 target_include_directories(freertos PUBLIC

@@ -10,6 +10,7 @@
 #include "test_items.h"
 
 #include "main.h"
+#include "dprint/dprint.h"
 
 static uint8_t count = 0;
 static uint8_t led_select = 0;
@@ -23,4 +24,5 @@ uint8_t TestLed() {
     if (led_select % 4 == 3) HAL_GPIO_TogglePin(LED4_GPIO_Port, LED4_Pin);
     ++led_select;
   }
+  return 0;
 }

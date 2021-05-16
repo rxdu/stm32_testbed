@@ -19,7 +19,6 @@ option(USE_LL_LIB "Enable LL library" ON)
 option(USE_HAL_LIB "Enable HAL library" ON)
 
 option(USE_FREERTOS "Enable FreeRTOS" ON)
-option(USE_SYSTEM_VIEW "Enable Segger SystemView library" OFF)
 
 message(STATUS "Board path: ${BOARD_DIR}")
 
@@ -31,7 +30,7 @@ set(TARGET_SRC
     ${BOARD_DIR}/cubemx/Core/Src/stm32f4xx_it.c
     ${BOARD_DIR}/cubemx/Core/Src/system_stm32f4xx.c
     ${BOARD_DIR}/cubemx/startup_stm32f427xx.s
-    # ${BOARD_DIR}/periph_impl/periph.c
+    ${BOARD_DIR}/periph_impl/periph.c
 )
 set(TARGET_INC
     ${BOARD_DIR}/periph_impl

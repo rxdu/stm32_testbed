@@ -23,7 +23,7 @@
 static void TestbedMainTask();
 
 bool InitTestbed() {
-  DPrintf(0, "Starting STM32 testbed\n", 0);
+  DPrintf(0, "Starting STM32 testbed, target board: %s\n", BOARD_NAME);
 
   xTaskCreate(TestbedMainTask, (const char *)"TestBedMain", 256, NULL,
               TASK_PRIORITY_MID, NULL);
@@ -35,7 +35,8 @@ void TestbedMainTask() {
   TickType_t last_waketime = xTaskGetTickCount();
 
   for (;;) {
-    TestLed();
+    // TestLed();
+    TestDio();
 
     vTaskDelayUntil(&last_waketime, task_delay);
   }

@@ -1,6 +1,7 @@
 ## setup board/app directory
 if(EXISTS "${TARGET_DIR}/${BOARD_NAME}")
     set(BOARD_DIR ${TARGET_DIR}/${BOARD_NAME})
+    add_definitions("-DBOARD_NAME=\"${BOARD_NAME}\"")
 else()
     message(FATAL_ERROR "Unknown board: ${BOARD_NAME}")
 endif()
@@ -88,7 +89,7 @@ add_subdirectory(${WS_LIBRARY_PATH}/SeggerRTT)
 
 # common modules
 add_subdirectory(${WS_MODULES_PATH}/dprint)
-# add_subdirectory(${WS_MODULES_PATH}/mcal)
+add_subdirectory(${WS_MODULES_PATH}/periph)
 
 # project-specific modules
 # add_subdirectory(driver)
@@ -98,7 +99,7 @@ add_subdirectory(testbed)
 # STM32CubeMX generated source files (TARGET_SRC)
 add_executable(${ELF_TARGET} ${TARGET_SRC})
 target_compile_definitions(${ELF_TARGET} PRIVATE -D${MCU_FAMILY} -DAPP_START_ADDRESS=${FW_START_ADDRESS})
-target_link_libraries(${ELF_TARGET} PRIVATE testbed ${EXTRA_SYS_LIBS})
+target_link_libraries(${ELF_TARGET} PRIVATE periph testbed ${EXTRA_SYS_LIBS})
 target_link_libraries(${ELF_TARGET} PRIVATE -T${LINKER_SCRIPT} ${EXTRA_LINK_FLAGS})
 target_include_directories(${ELF_TARGET} PRIVATE
   $<BUILD_INTERFACE:${BOARD_DIR}/cubemx/Core/Inc>)
