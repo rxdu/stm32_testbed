@@ -93,8 +93,6 @@ add_definitions("-D${STM32_SERIES}")
 # common libraries
 add_subdirectory(${WS_LIBRARY_PATH}/FreeRTOS)
 add_subdirectory(${WS_LIBRARY_PATH}/SeggerRTT)
-add_subdirectory(${WS_LIBRARY_PATH}/ISO-TP)
-add_subdirectory(${WS_LIBRARY_PATH}/Nanopb)
 
 # common modules
 add_subdirectory(${WS_MODULES_PATH}/dprint)

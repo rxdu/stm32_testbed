@@ -28,7 +28,7 @@ bool InitTestbed() {
 }
 
 void TestbedMainTask() {
-  const TickType_t task_delay = pdMS_TO_TICKS(500);
+  const TickType_t task_delay = pdMS_TO_TICKS(200);
   TickType_t last_waketime = xTaskGetTickCount();
 
   for (;;) {

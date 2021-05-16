@@ -1,4 +1,4 @@
 h
-loadfile racer_fw.hex, 0x8000000
+loadfile stm32_testbed.hex, 0x8000000
 r
 q
