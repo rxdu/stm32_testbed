@@ -16,12 +16,6 @@ if(NOT DEFINED BOARD_NAME)
 set(BOARD_NAME "bbb_racer_cape")
 endif()
 
-## choose the application
-# app_blink
-if(NOT DEFINED APP_NAME)
-set(APP_NAME "app_blink")
-endif()
-
 ## chosse build type (Debug/Release)
 set(CMAKE_BUILD_TYPE Debug)
 

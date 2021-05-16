@@ -8,15 +8,7 @@ endif()
 # print project info
 message(STATUS "Building project: ${PROJECT_NAME}")
 message(STATUS "Target board: ${BOARD_NAME}")
-
-if(APP_NAME STREQUAL "app_blink")
-    add_definitions("-DAPP_BLINK")
-elseif(APP_NAME STREQUAL "app_racer")
-    add_definitions("-DAPP_RACER")
-else()
-    message(FATAL_ERROR "Unkonwn application: ${APP_NAME}")
-endif()
-message(STATUS "Target application: ${APP_NAME}")
+message(STATUS "Target application: stm32_testbed")
 
 ## Setup cross-compile toolchain 
 set(CROSS_COMPILE_PREFIX arm-none-eabi)
@@ -96,7 +88,6 @@ add_subdirectory(${WS_LIBRARY_PATH}/SeggerRTT)
 
 # common modules
 add_subdirectory(${WS_MODULES_PATH}/dprint)
-add_subdirectory(${WS_MODULES_PATH}/ringbuf)
 add_subdirectory(${WS_MODULES_PATH}/mcal)
 
 # project-specific modules
