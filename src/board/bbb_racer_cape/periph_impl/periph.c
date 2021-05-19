@@ -14,22 +14,52 @@
 #include "stm32f4xx_ll_tim.h"
 
 // GPIO
-DIOPinMapping dio = {
+DioConfig dio_cfg = {
     // input pins
-    .input = {{NULL, 0x00000000},
-              {NULL, 0x00000000},
-              {NULL, 0x00000000},
-              {NULL, 0x00000000},
-              {NULL, 0x00000000},
-              {NULL, 0x00000000},
-              {NULL, 0x00000000},
-              {NULL, 0x00000000}},
+    .input = {{DI1_GPIO_Port, DI1_Pin, DI_EXTI},
+              {DI2_GPIO_Port, DI2_Pin, DI_POLLING},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE},
+              {NULL, 0x00000000, DIO_TEST_NONE}},
     // output pins
-    .output = {/* LED - R/G/B */
-               {LED1_GPIO_Port, LED1_Pin},
-               {LED2_GPIO_Port, LED2_Pin},
-               {LED3_GPIO_Port, LED3_Pin},
-               {LED4_GPIO_Port, LED4_Pin}}};
+    .output = {{LED1_GPIO_Port, LED1_Pin, DO_TOGGLING},
+               {LED2_GPIO_Port, LED2_Pin, DO_TOGGLING},
+               {LED3_GPIO_Port, LED3_Pin, DO_TOGGLING},
+               {LED4_GPIO_Port, LED4_Pin, DO_TOGGLING},
+               {DO1_GPIO_Port, DO1_Pin, DO_TOGGLING},
+               {VDD_SENSOR_EN_GPIO_Port, VDD_SENSOR_EN_Pin, DO_CONST_SET},
+               {NULL, 0x00000000, DIO_TEST_NONE},
+               {NULL, 0x00000000, DIO_TEST_NONE},
+               {NULL, 0x00000000, DIO_TEST_NONE},
+               {NULL, 0x00000000, DIO_TEST_NONE},
+               {NULL, 0x00000000, DIO_TEST_NONE},
+               {NULL, 0x00000000, DIO_TEST_NONE},
+               {NULL, 0x00000000, DIO_TEST_NONE},
+               {NULL, 0x00000000, DIO_TEST_NONE},
+               {NULL, 0x00000000, DIO_TEST_NONE},
+               {NULL, 0x00000000, DIO_TEST_NONE}},
+    .led_pin_num = 4};
+
+// LED
+LedConfig led_cfg = {.led[0] = {&dio_cfg.output[0], true},
+                     .led[1] = {&dio_cfg.output[1], true},
+                     .led[2] = {&dio_cfg.output[2], true},
+                     .led[3] = {&dio_cfg.output[3], true},
+                     .led[4] = {NULL, true},
+                     .led[5] = {NULL, true},
+                     .led[6] = {NULL, true},
+                     .led[7] = {NULL, true}};
 
 // USART3 - for SBUS communication
 // #define SBUS_DMA_RX_BUFFER_SIZE 64

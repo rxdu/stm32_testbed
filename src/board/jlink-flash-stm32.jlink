@@ -1,4 +1,4 @@
 h
-loadfile stm32_testbed.hex, 0x8000000
+loadfile stm32_testbed.hex, 0x08000000
 r
 q

@@ -20,19 +20,23 @@
 #include "stm32f4xx_hal_gpio.h"
 #endif
 
-inline void DioSet(DIOPinDef* digital_io) {
+inline void SetDio(DioPinDef* digital_io) {
+  assert(digital_io != NULL);
   HAL_GPIO_WritePin(digital_io->port, digital_io->pin, GPIO_PIN_SET);
 }
 
-inline void DioReset(DIOPinDef* digital_io) {
+inline void ResetDio(DioPinDef* digital_io) {
+  assert(digital_io != NULL);
   HAL_GPIO_WritePin(digital_io->port, digital_io->pin, GPIO_PIN_RESET);
 }
 
-inline void DioToggle(DIOPinDef* digital_io) {
+inline void ToggleDio(DioPinDef* digital_io) {
+  assert(digital_io != NULL);
   HAL_GPIO_TogglePin(digital_io->port, digital_io->pin);
 }
 
-inline uint8_t DioGetPinLevel(DIOPinDef* digital_io) {
+inline uint8_t GetDioPinLevel(DioPinDef* digital_io) {
+  assert(digital_io != NULL);
   GPIO_PinState pin_state = HAL_GPIO_ReadPin(digital_io->port, digital_io->pin);
 
   if (pin_state == GPIO_PIN_SET)

@@ -11,6 +11,8 @@
 #define PERIPH_H
 
 #include <stdint.h>
+#include <stdbool.h>
+#include <assert.h>
 
 #ifdef STM32F1
 #include "stm32f1xx.h"
@@ -29,6 +31,8 @@
 #define DI_PIN_NUM 16
 #define DO_PIN_NUM 16
 
+#define LED_NUM 8
+
 #define DMA_CHN_NUM 16
 #define TIMER_CHN_NUM 4
 #define PWM_CHN_NUM 4
@@ -40,15 +44,35 @@
 //------------------------------------------------------------------//
 
 // digital input/output
-typedef struct {
-  GPIO_TypeDef *port;
-  uint32_t pin;
-} DIOPinDef;
+typedef enum {
+  DIO_TEST_NONE = 0,
+  DI_EXTI,
+  DI_POLLING,
+  DO_TOGGLING,
+  DO_CONST_SET,
+  DO_CONST_RESET
+} DioTestMode;
 
 typedef struct {
-  DIOPinDef input[DI_PIN_NUM];
-  DIOPinDef output[DO_PIN_NUM];
-} DIOPinMapping;
+  GPIO_TypeDef* port;
+  uint32_t pin;
+  DioTestMode mode;
+} DioPinDef;
+
+typedef struct {
+  DioPinDef input[DI_PIN_NUM];
+  DioPinDef output[DO_PIN_NUM];
+  uint8_t led_pin_num;
+} DioConfig;
+
+typedef struct {
+  DioPinDef* pin;
+  bool active_low;
+} LedPinDef;
+
+typedef struct {
+  LedPinDef led[LED_NUM];
+} LedConfig;
 
 // // DMA
 // typedef struct {
@@ -137,7 +161,8 @@ typedef struct {
 //------------------------------------------------------------------//
 
 // Port/Device Mapping
-extern DIOPinMapping dio;
+extern DioConfig dio_cfg;
+extern LedConfig led_cfg;
 
 // extern UARTChnMapping uart;
 // extern SPIChnMapping spi;

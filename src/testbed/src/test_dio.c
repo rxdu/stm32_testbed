@@ -1,11 +1,11 @@
-/* 
+/*
  * test_dio.c
- * 
+ *
  * Created on: May 17, 2021 00:09
- * Description: 
- * 
+ * Description:
+ *
  * Copyright (c) 2021 Ruixiang Du (rdu)
- */ 
+ */
 
 #include "test_items.h"
 
@@ -14,17 +14,27 @@
 
 #include "periph/dio.h"
 
-static uint8_t count = 0;
-static uint8_t led_select = 0;
+static uint32_t count = 0;
 
-uint8_t TestDio() {
-  // update LED every 50 iterations
-  if (++count % 100 == 0) {
-    if (led_select % 4 == 0) DioToggle(&dio.output[0]);
-    if (led_select % 4 == 1) DioToggle(&dio.output[1]);
-    if (led_select % 4 == 2) DioToggle(&dio.output[2]);
-    if (led_select % 4 == 3) DioToggle(&dio.output[3]);
-    ++led_select;
+void TestDio(TestItemList* list, uint32_t freq_div) {
+  // update dio every 100 iterations
+  if (++count % freq_div == 0) {
+    assert(dio_cfg.led_pin_num < LED_NUM);
+
+    // input pins
+    for (int i = 0; i < list->dio_input_num; ++i) {
+      if (dio_cfg.input[i].mode == DI_POLLING) {
+        DPrintf(0, "[INFO] DIO input pin %d: %d\n", i,
+                GetDioPinLevel(&dio_cfg.input[i]));
+      }
+    }
+
+    // output pins
+    for (int i = list->led_num; i < list->dio_output_num; ++i) {
+      if (dio_cfg.output[i].mode == DO_TOGGLING) ToggleDio(&dio_cfg.output[i]);
+      if (dio_cfg.output[i].mode == DO_CONST_SET) SetDio(&dio_cfg.output[i]);
+      if (dio_cfg.output[i].mode == DO_CONST_RESET)
+        ResetDio(&dio_cfg.output[i]);
+    }
   }
-  return 0;
 }

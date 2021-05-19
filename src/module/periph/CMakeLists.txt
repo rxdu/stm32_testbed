@@ -1,6 +1,7 @@
 # add library
 add_library(periph STATIC 
-    src/dio.c)
+    src/dio.c
+    src/led.c)
 target_link_libraries(periph PUBLIC cmsis ${STM32HAL_LIB} dprint freertos)
 target_include_directories(periph PUBLIC 
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
