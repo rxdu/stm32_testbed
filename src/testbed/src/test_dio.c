@@ -17,7 +17,6 @@
 static uint32_t count = 0;
 
 void TestDio(TestItemList* list, uint32_t freq_div) {
-  // update dio every 100 iterations
   if (++count % freq_div == 0) {
     assert(dio_cfg.led_pin_num < LED_NUM);
 
