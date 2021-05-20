@@ -30,16 +30,17 @@
 
 #define DI_PIN_NUM 16
 #define DO_PIN_NUM 16
-
 #define LED_NUM 8
 
-#define DMA_CHN_NUM 16
-#define TIMER_CHN_NUM 4
-#define PWM_CHN_NUM 4
+#define UART_CHN_NUM 8
+#define UART_PORT_NAME_LEN 16
+#define UART_RX_BUFFER_SIZE 64
 
 #define CAN_CHN_NUM 2
-#define UART_CHN_NUM 8
 #define SPI_CHN_NUM 2
+
+#define TIMER_CHN_NUM 4
+#define PWM_CHN_NUM 4
 
 //------------------------------------------------------------------//
 
@@ -74,15 +75,16 @@ typedef struct {
   LedPinDef led[LED_NUM];
 } LedConfig;
 
-// // DMA
-// typedef struct {
-//   DMAControllerDef controller;
-//   uint32_t stream;
-//   uint32_t channel;
-//   uint8_t *address;
-//   uint32_t size;
-//   size_t indexer;
-// } DMAChnDef;
+// UART
+typedef struct {
+  char name[UART_PORT_NAME_LEN];
+  UART_HandleTypeDef* handler;
+  uint8_t rx_buffer[UART_RX_BUFFER_SIZE];
+} UartChnDef;
+
+typedef struct {
+  UartChnDef channel[UART_CHN_NUM];
+} UartConfig;
 
 // // SPI
 // typedef struct {
@@ -93,26 +95,6 @@ typedef struct {
 // typedef struct {
 //   SPIChnDef channel[SPI_CHN_NUM];
 // } SPIChnMapping;
-
-// // UART
-// typedef struct {
-//   UARTPortDef port;
-//   DMAChnDef rx_dma;
-//   DMAChnDef tx_dma;
-// #ifdef USE_FREERTOS
-//   SemaphoreHandle_t rx_semaphore;
-// #else
-//   bool new_data_received;
-// #endif
-//   // data managed inside driver
-//   Ringbuf *rx_ring_buffer;
-//   uint8_t *rxbuf_data;
-//   uint32_t rxbuf_size;
-// } UARTChnDef;
-
-// typedef struct {
-//   UARTChnDef channel[UART_CHN_NUM];
-// } UARTChnMapping;
 
 // // Timer
 // typedef struct {
@@ -164,7 +146,7 @@ typedef struct {
 extern DioConfig dio_cfg;
 extern LedConfig led_cfg;
 
-// extern UARTChnMapping uart;
+extern UartConfig uart_cfg;
 // extern SPIChnMapping spi;
 // extern CANChnMapping can;
 

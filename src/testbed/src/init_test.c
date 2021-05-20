@@ -7,10 +7,16 @@
  * Copyright (c) 2021 Ruixiang Du (rdu)
  */
 
-#include "test_items.h"
+#include "common.h"
 
-#include "dprint/dprint.h"
 #include "periph/periph.h"
+
+#define TASK_PRIORITY_HIGHEST 4
+#define TASK_PRIORITY_HIGH 3
+#define TASK_PRIORITY_MID 2
+#define TASK_PRIORITY_LOW 1
+
+TestItemList item_list;
 
 void InitTestItems(TestItemList* list) {
   DPrintf(0, "[INFO] Check peripheral configuration... \n", 0);
@@ -42,6 +48,17 @@ void InitTestItems(TestItemList* list) {
 
   //---------------------------------------------//
 
+  // check which items to run
+  if (list->dio_input_num == 0 && (list->dio_output_num - list->led_num) == 0)
+    list->enable_dio_test = false;
+  else
+    list->enable_dio_test = true;
+
+  if (list->led_num == 0)
+    list->enable_led_test = false;
+  else
+    list->enable_led_test = true;
+
   // sanity check
   bool ret = false;
   if (list->led_num > list->dio_output_num) {
@@ -54,19 +71,38 @@ void InitTestItems(TestItemList* list) {
             "[INFO] Sanity check completed, no inconsistency found in "
             "peripheral configuration\n",
             0);
-    DPrintf(0, "[INFO] Checklist for STM32CubeMX: \n", 0);
-    DPrintf(
-        0,
-        "[INFO] - DI GPIO: set rising edge trigger detection with pull down \n",
-        0);
-    DPrintf(0,
-            "[INFO] - DI EXTI: you've enabled the EXTI interrupt in NVIC "
-            "settings\n",
-            0);
+    DPrintf(0, "[INFO] Checklist for STM32CubeMX configurations \n", 0);
+    if (list->enable_dio_test) {
+      DPrintf(0,
+              "[INFO] - DI GPIO: set rising edge trigger detection with pull "
+              "down \n",
+              0);
+      DPrintf(0,
+              "[INFO] - DI EXTI: you've enabled the EXTI interrupt in NVIC "
+              "settings\n",
+              0);
+    }
   } else {
     DPrintf(0,
             "[ERROR] Inconsistency found in peripheral configuration, please "
             "fix the error first!!!\n",
             0);
   }
+}
+
+void StartTestbed() {
+  DPrintf(0, "\n\n\n", 0);
+  DPrintf(0, "****************************************************\n", 0);
+  DPrintf(0, "Starting STM32 testbed, target board: %s\n", BOARD_NAME);
+  DPrintf(0, "----------------------------------------------------\n", 0);
+
+  InitTestItems(&item_list);
+
+  xTaskCreate(TestbedDioTask, (const char*)"TestbedIO", 256, &item_list,
+              TASK_PRIORITY_MID, NULL);
+  xTaskCreate(TestbedUartTask, (const char*)"TestbedUart", 256, &item_list,
+              TASK_PRIORITY_MID, NULL);
+
+  DPrintf(0, "----------------------------------------------------\n", 0);
+  DPrintf(0, "[INFO] Testing task started \n", 0);
 }

@@ -10,6 +10,7 @@
 #include "periph/periph.h"
 
 #include "main.h"
+#include "usart.h"
 
 #include "stm32f4xx_ll_tim.h"
 
@@ -67,6 +68,15 @@ LedConfig led_cfg = {.led[0] = {&dio_cfg.output[0], true},
 // static uint8_t sbus_dma_buffer[SBUS_DMA_RX_BUFFER_SIZE];
 // static Ringbuf sbus_ring_buffer;
 // static uint8_t sbus_rx_buffer[SBUS_FRAME_BUFFER_SIZE];
+
+UartConfig uart_cfg = {.channel[0] = {"USART6", &huart6},
+                       .channel[1] = {"NULL", NULL},
+                       .channel[2] = {"NULL", NULL},
+                       .channel[3] = {"NULL", NULL},
+                       .channel[4] = {"NULL", NULL},
+                       .channel[5] = {"NULL", NULL},
+                       .channel[6] = {"NULL", NULL},
+                       .channel[7] = {"NULL", NULL}};
 
 // UARTChnMapping uart = {
 //     // sbus

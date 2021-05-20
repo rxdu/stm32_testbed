@@ -13,15 +13,24 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "FreeRTOS.h"
+#include "task.h"
+
+#include "dprint/dprint.h"
+
+// init
 typedef struct {
   uint8_t dio_input_num;
   uint8_t dio_output_num;
+  bool enable_dio_test;
   uint8_t led_num;
+  bool enable_led_test;
 } TestItemList;
 
 void InitTestItems(TestItemList* list);
 
-void TestDio(TestItemList* list, uint32_t freq_div);
-void TestLed(TestItemList* list, uint32_t freq_div);
+// tasks
+void TestbedDioTask(void* param);
+void TestbedUartTask(void* param);
 
 #endif /* TEST_ITEMS_H */

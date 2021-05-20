@@ -23,12 +23,18 @@ option(USE_FREERTOS "Enable FreeRTOS" ON)
 message(STATUS "Board path: ${BOARD_DIR}")
 
 set(TARGET_SRC
+    ${BOARD_DIR}/cubemx/Core/Src/can.c
     ${BOARD_DIR}/cubemx/Core/Src/freertos.c
+    ${BOARD_DIR}/cubemx/Core/Src/gpio.c
+    ${BOARD_DIR}/cubemx/Core/Src/i2c.c
     ${BOARD_DIR}/cubemx/Core/Src/main.c
+    ${BOARD_DIR}/cubemx/Core/Src/spi.c
     ${BOARD_DIR}/cubemx/Core/Src/stm32f4xx_hal_msp.c
     ${BOARD_DIR}/cubemx/Core/Src/stm32f4xx_hal_timebase_tim.c
     ${BOARD_DIR}/cubemx/Core/Src/stm32f4xx_it.c
     ${BOARD_DIR}/cubemx/Core/Src/system_stm32f4xx.c
+    ${BOARD_DIR}/cubemx/Core/Src/tim.c
+    ${BOARD_DIR}/cubemx/Core/Src/usart.c
     ${BOARD_DIR}/cubemx/startup_stm32f427xx.s
     ${BOARD_DIR}/periph_impl/periph.c
 )
