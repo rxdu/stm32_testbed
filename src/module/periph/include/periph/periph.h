@@ -37,6 +37,8 @@
 #define UART_RX_BUFFER_SIZE 64
 
 #define CAN_CHN_NUM 2
+#define CAN_BUS_NAME_LEN 8
+
 #define SPI_CHN_NUM 2
 
 #define TIMER_CHN_NUM 4
@@ -87,6 +89,43 @@ typedef struct {
   UartChnDef channel[UART_CHN_NUM];
 } UartConfig;
 
+// CAN
+typedef struct {
+  uint32_t can_id;
+  uint8_t can_dlc;
+  uint8_t __pad;  /* padding */
+  uint8_t __res0; /* reserved / padding */
+  uint8_t __res1; /* reserved / padding */
+  uint8_t data[8] __attribute__((aligned(8)));
+} CanFrame;
+
+typedef struct {
+  uint32_t filter_id_high;
+  uint32_t filter_id_low;
+  uint32_t filter_mask_id_high;
+  uint32_t filter_mask_id_low;
+  uint32_t filter_fifo_assignment;
+  uint32_t filter_bank;
+  uint32_t filter_mode;
+  uint32_t filter_scale;
+  uint32_t filter_activation;
+  uint32_t slave_start_filter_bank;
+} CANFilter;
+
+typedef struct {
+  char name[CAN_BUS_NAME_LEN];
+  CAN_HandleTypeDef* handler;
+  uint32_t active_its;
+  uint32_t rx_fifo;
+  CANFilter rx_filter;
+  SemaphoreHandle_t rx_semaphore;
+  CanFrame rx_frame;
+} CanChnDef;
+
+typedef struct {
+  CanChnDef channel[CAN_CHN_NUM];
+} CanConfig;
+
 // // SPI
 // typedef struct {
 //   uint8_t cs_pin;
@@ -111,36 +150,6 @@ typedef struct {
 //   TimerChnDef channel[TIMER_CHN_NUM];
 // } GTimerChnMapping;
 
-// // CAN
-// typedef struct {
-//   uint32_t filter_id_high;
-//   uint32_t filter_id_low;
-//   uint32_t filter_mask_id_high;
-//   uint32_t filter_mask_id_low;
-//   uint32_t filter_fifo_assignment;
-//   uint32_t filter_bank;
-//   uint32_t filter_mode;
-//   uint32_t filter_scale;
-//   uint32_t filter_activation;
-//   uint32_t slave_start_filter_bank;
-// } CANFilter;
-
-// typedef struct {
-//   CanDef port;
-//   uint32_t active_its;
-//   uint32_t rx_fifo;
-//   CANFilter rx_filter;
-//   // handle received data
-// #ifdef USE_FREERTOS
-//   QueueHandle_t rx_frame_buffer;
-//   uint32_t rx_frame_buffer_length;
-// #endif
-// } CANChnDef;
-
-// typedef struct {
-//   CANChnDef channel[CAN_CHN_NUM];
-// } CANChnMapping;
-
 //------------------------------------------------------------------//
 
 // Port/Device Mapping
@@ -148,8 +157,9 @@ extern DioConfig dio_cfg;
 extern LedConfig led_cfg;
 
 extern UartConfig uart_cfg;
+extern CanConfig can_cfg;
+
 // extern SPIChnMapping spi;
-// extern CANChnMapping can;
 
 // extern PWMChnMapping pwm;
 

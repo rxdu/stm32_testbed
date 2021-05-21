@@ -27,6 +27,8 @@ typedef struct {
   bool enable_led_test;
   uint8_t uart_num;
   bool enable_uart_test;
+  uint8_t can_num;
+  bool enable_can_test;
 } TestItemList;
 
 void InitTestItems(TestItemList* list);
@@ -34,5 +36,6 @@ void InitTestItems(TestItemList* list);
 // tasks
 void TestbedDioTask(void* param);
 void TestbedUartTask(void* param);
+void TestbedCanTask(void* param);
 
 #endif /* TEST_ITEMS_H */

@@ -49,12 +49,20 @@ void InitTestItems(TestItemList* list) {
 
   //---------------------------------------------//
 
+  list->can_num = 0;
+  for (int i = 0; i < CAN_CHN_NUM; ++i) {
+    if (can_cfg.channel[i].handler != NULL) list->can_num++;
+  }
+
+  //---------------------------------------------//
+
   DPrintf(0, "[INFO] Summay of defined peripherals: \n", 0);
   DPrintf(0, "[INFO] - Dio input pin number: %d\n", list->dio_input_num);
-  DPrintf(0, "[INFO] - Dio output pin number: %d (%d LEDs)\n",
+  DPrintf(0, "[INFO] - Dio output pin number: %d (+ %d LEDs)\n",
           list->dio_output_num - list->led_num, list->led_num);
   DPrintf(0, "[INFO] - LED pin number: %d\n", list->led_num);
   DPrintf(0, "[INFO] - UART channel number: %d\n", list->uart_num);
+  DPrintf(0, "[INFO] - CAN channel number: %d\n", list->can_num);
 
   //---------------------------------------------//
 
@@ -73,6 +81,11 @@ void InitTestItems(TestItemList* list) {
     list->enable_uart_test = false;
   else
     list->enable_uart_test = true;
+
+  if (list->can_num == 0)
+    list->enable_can_test = false;
+  else
+    list->enable_can_test = true;
 
   // sanity check
   bool ret = false;
@@ -98,12 +111,23 @@ void InitTestItems(TestItemList* list) {
               0);
     }
     if (list->enable_uart_test) {
-      DPrintf(0,
-              "[INFO] - UART: enable UART global interrupt in UART NVIC settins\n",
-              0);
+      DPrintf(
+          0,
+          "[INFO] - UART: enable UART global interrupt in UART NVIC settings\n",
+          0);
       DPrintf(0,
               "[INFO] - UART: connect TX and RX to allow automatic echo or "
               "echo manually from another device\n",
+              0);
+    }
+    if (list->enable_can_test) {
+      DPrintf(0,
+              "[INFO] - CAN: set CAN baud rate to be 500k and enable RX0 or "
+              "RX1 interrupt\n",
+              0);
+      DPrintf(0,
+              "[INFO] - CAN: you need at least 2 CAN devices for successful "
+              "communication\n",
               0);
     }
   } else {
@@ -127,6 +151,11 @@ void StartTestbed() {
 
   if (item_list.enable_uart_test) {
     xTaskCreate(TestbedUartTask, (const char*)"TestbedUart", 256, &item_list,
+                TASK_PRIORITY_MID, NULL);
+  }
+
+  if (item_list.enable_can_test) {
+    xTaskCreate(TestbedCanTask, (const char*)"TestbedCan", 256, &item_list,
                 TASK_PRIORITY_MID, NULL);
   }
 

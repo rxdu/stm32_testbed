@@ -11,6 +11,7 @@
 
 #include "main.h"
 #include "usart.h"
+#include "can.h"
 
 #include "stm32f4xx_ll_tim.h"
 
@@ -65,25 +66,33 @@ LedConfig led_cfg = {.led[0] = {&dio_cfg.output[0], true},
 // UART
 UartConfig uart_cfg = {.channel[0] = {"USART6", &huart6},
                        .channel[1] = {"UART8", &huart8},
-                       .channel[2] = {"USART3", &huart3},
+                       .channel[2] = {"NULL", NULL},
+                       //    .channel[2] = {"USART3", &huart3},
                        .channel[3] = {"NULL", NULL},
                        .channel[4] = {"NULL", NULL},
                        .channel[5] = {"NULL", NULL},
                        .channel[6] = {"NULL", NULL},
                        .channel[7] = {"NULL", NULL}};
 
-// // CAN
-// #define CAN1_INPUT_QUEUE_LENGTH 32
-
-// CANChnMapping can = {
-//     .channel[0] = {
-//         .port = &hcan1,
-//         .active_its = CAN_IT_RX_FIFO0_MSG_PENDING,
-//         .rx_fifo = CAN_RX_FIFO0,
-//         .rx_filter = {0x0000, 0x0000, 0x0000, 0x0000, CAN_RX_FIFO0, 0,
-//                       CAN_FILTERMODE_IDMASK, CAN_FILTERSCALE_32BIT, ENABLE,
-//                       0},
-//         .rx_frame_buffer_length = CAN1_INPUT_QUEUE_LENGTH}};
+// CAN
+CanConfig can_cfg = {
+    // CAN1
+    .channel[0] = {.name = "CAN1",
+                //    .handler = &hcan1,
+                     .handler = NULL,
+                   .active_its = CAN_IT_RX_FIFO0_MSG_PENDING,
+                   .rx_fifo = CAN_RX_FIFO0,
+                   .rx_filter = {0x0000, 0x0000, 0x0000, 0x0000, CAN_RX_FIFO0,
+                                 0, CAN_FILTERMODE_IDMASK,
+                                 CAN_FILTERSCALE_32BIT, ENABLE, 0}},
+    // CAN2
+    .channel[1] = {.name = "CAN2",
+                   .handler = &hcan2,
+                   .active_its = CAN_IT_RX_FIFO1_MSG_PENDING,
+                   .rx_fifo = CAN_RX_FIFO1,
+                   .rx_filter = {0x0000, 0x0000, 0x0000, 0x0000, CAN_RX_FIFO1,
+                                 14, CAN_FILTERMODE_IDMASK,
+                                 CAN_FILTERSCALE_32BIT, ENABLE, 14}}};
 
 // // SPI
 // SPIChnMapping spi = {.channel[0] = {3, SPI1}};
