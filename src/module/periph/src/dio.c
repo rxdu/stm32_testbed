@@ -12,7 +12,7 @@
 #include "dprint/dprint.h"
 
 #define PRINT_EXTI_SOURCE(pin) \
-  { DPrintf(0, "EXTI callback triggered: %s \n", #pin); }
+  { DPrintf(0, "[INFO][DIO] EXTI callback triggered: %s \n", #pin); }
 
 #ifdef STM32F1
 #include "stm32f1xx_hal_gpio.h"
@@ -98,7 +98,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
       PRINT_EXTI_SOURCE(GPIO_PIN_15);
       break;
     default:
-      DPrintf(0, "EXTI callback triggered: Unknonwn\n", 0);
+      DPrintf(0, "[ERROR][DIO] EXTI callback triggered: Unknonwn\n", 0);
       break;
   }
 }

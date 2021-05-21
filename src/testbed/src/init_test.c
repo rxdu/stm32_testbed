@@ -160,5 +160,5 @@ void StartTestbed() {
   }
 
   DPrintf(0, "----------------------------------------------------\n", 0);
-  DPrintf(0, "[INFO] Testing task started \n", 0);
+  DPrintf(0, "\n[INFO] Testing task started \n", 0);
 }

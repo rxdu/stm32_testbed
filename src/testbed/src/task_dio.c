@@ -23,7 +23,7 @@ void TestDio(TestItemList* list, uint32_t freq_div) {
     // input pins
     for (int i = 0; i < list->dio_input_num; ++i) {
       if (dio_cfg.input[i].mode == DI_POLLING) {
-        DPrintf(0, "[INFO][DIO] input pin %d: %d\n", i,
+        DPrintf(0, "[INFO][DIO] Input pin (polling) voltage level %d: %d\n", i,
                 GetDioPinLevel(&dio_cfg.input[i]));
       }
     }
@@ -59,9 +59,6 @@ void TestbedDioTask(void* param) {
 
     // DIO task runs at 0.5Hz (2s)
     if (list->enable_dio_test) TestDio(list, 200);
-
-    // // UART task runs at 1Hz (1s)
-    // TestUart(&item_list, 100);
 
     vTaskDelayUntil(&last_waketime, task_delay);
   }
