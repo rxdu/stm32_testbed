@@ -25,6 +25,8 @@ typedef struct {
   bool enable_dio_test;
   uint8_t led_num;
   bool enable_led_test;
+  uint8_t uart_num;
+  bool enable_uart_test;
 } TestItemList;
 
 void InitTestItems(TestItemList* list);

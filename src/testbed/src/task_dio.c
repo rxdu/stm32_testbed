@@ -23,7 +23,7 @@ void TestDio(TestItemList* list, uint32_t freq_div) {
     // input pins
     for (int i = 0; i < list->dio_input_num; ++i) {
       if (dio_cfg.input[i].mode == DI_POLLING) {
-        DPrintf(0, "[INFO] DIO input pin %d: %d\n", i,
+        DPrintf(0, "[INFO][DIO] input pin %d: %d\n", i,
                 GetDioPinLevel(&dio_cfg.input[i]));
       }
     }

@@ -79,6 +79,7 @@ typedef struct {
 typedef struct {
   char name[UART_PORT_NAME_LEN];
   UART_HandleTypeDef* handler;
+  SemaphoreHandle_t rx_semaphore;
   uint8_t rx_buffer[UART_RX_BUFFER_SIZE];
 } UartChnDef;
 

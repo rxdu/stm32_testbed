@@ -40,11 +40,21 @@ void InitTestItems(TestItemList* list) {
     if (led_cfg.led[i].pin != NULL) list->led_num++;
   }
 
+  //---------------------------------------------//
+
+  list->uart_num = 0;
+  for (int i = 0; i < UART_CHN_NUM; ++i) {
+    if (uart_cfg.channel[i].handler != NULL) list->uart_num++;
+  }
+
+  //---------------------------------------------//
+
   DPrintf(0, "[INFO] Summay of defined peripherals: \n", 0);
   DPrintf(0, "[INFO] - Dio input pin number: %d\n", list->dio_input_num);
   DPrintf(0, "[INFO] - Dio output pin number: %d (%d LEDs)\n",
           list->dio_output_num - list->led_num, list->led_num);
   DPrintf(0, "[INFO] - LED pin number: %d\n", list->led_num);
+  DPrintf(0, "[INFO] - UART channel number: %d\n", list->uart_num);
 
   //---------------------------------------------//
 
@@ -58,6 +68,11 @@ void InitTestItems(TestItemList* list) {
     list->enable_led_test = false;
   else
     list->enable_led_test = true;
+
+  if (list->uart_num == 0)
+    list->enable_uart_test = false;
+  else
+    list->enable_uart_test = true;
 
   // sanity check
   bool ret = false;
@@ -82,6 +97,15 @@ void InitTestItems(TestItemList* list) {
               "settings\n",
               0);
     }
+    if (list->enable_uart_test) {
+      DPrintf(0,
+              "[INFO] - UART: enable UART global interrupt in UART NVIC settins\n",
+              0);
+      DPrintf(0,
+              "[INFO] - UART: connect TX and RX to allow automatic echo or "
+              "echo manually from another device\n",
+              0);
+    }
   } else {
     DPrintf(0,
             "[ERROR] Inconsistency found in peripheral configuration, please "
@@ -100,8 +124,11 @@ void StartTestbed() {
 
   xTaskCreate(TestbedDioTask, (const char*)"TestbedIO", 256, &item_list,
               TASK_PRIORITY_MID, NULL);
-  xTaskCreate(TestbedUartTask, (const char*)"TestbedUart", 256, &item_list,
-              TASK_PRIORITY_MID, NULL);
+
+  if (item_list.enable_uart_test) {
+    xTaskCreate(TestbedUartTask, (const char*)"TestbedUart", 256, &item_list,
+                TASK_PRIORITY_MID, NULL);
+  }
 
   DPrintf(0, "----------------------------------------------------\n", 0);
   DPrintf(0, "[INFO] Testing task started \n", 0);

@@ -40,7 +40,7 @@ DioConfig dio_cfg = {
                {LED4_GPIO_Port, LED4_Pin, DO_TOGGLING},
                {DO1_GPIO_Port, DO1_Pin, DO_TOGGLING},
                {VDD_SENSOR_EN_GPIO_Port, VDD_SENSOR_EN_Pin, DO_CONST_SET},
-               {NULL, 0x00000000, DIO_TEST_NONE},
+               {FRSKY_INV_GPIO_Port, FRSKY_INV_Pin, DO_CONST_RESET},
                {NULL, 0x00000000, DIO_TEST_NONE},
                {NULL, 0x00000000, DIO_TEST_NONE},
                {NULL, 0x00000000, DIO_TEST_NONE},
@@ -62,32 +62,15 @@ LedConfig led_cfg = {.led[0] = {&dio_cfg.output[0], true},
                      .led[6] = {NULL, true},
                      .led[7] = {NULL, true}};
 
-// USART3 - for SBUS communication
-// #define SBUS_DMA_RX_BUFFER_SIZE 64
-// #define SBUS_FRAME_BUFFER_SIZE 256
-// static uint8_t sbus_dma_buffer[SBUS_DMA_RX_BUFFER_SIZE];
-// static Ringbuf sbus_ring_buffer;
-// static uint8_t sbus_rx_buffer[SBUS_FRAME_BUFFER_SIZE];
-
+// UART
 UartConfig uart_cfg = {.channel[0] = {"USART6", &huart6},
-                       .channel[1] = {"NULL", NULL},
-                       .channel[2] = {"NULL", NULL},
+                       .channel[1] = {"UART8", &huart8},
+                       .channel[2] = {"USART3", &huart3},
                        .channel[3] = {"NULL", NULL},
                        .channel[4] = {"NULL", NULL},
                        .channel[5] = {"NULL", NULL},
                        .channel[6] = {"NULL", NULL},
                        .channel[7] = {"NULL", NULL}};
-
-// UARTChnMapping uart = {
-//     // sbus
-//     .channel[0] = {.port = USART6,
-//                    .rx_dma = {DMA2, LL_DMA_STREAM_1, LL_DMA_CHANNEL_5,
-//                               sbus_dma_buffer, SBUS_DMA_RX_BUFFER_SIZE, 0},
-//                    .tx_dma = {NULL, 0, 0, 0, 0},
-//                    // ring buffer
-//                    .rx_ring_buffer = &sbus_ring_buffer,
-//                    .rxbuf_data = sbus_rx_buffer,
-//                    .rxbuf_size = SBUS_FRAME_BUFFER_SIZE}};
 
 // // CAN
 // #define CAN1_INPUT_QUEUE_LENGTH 32
